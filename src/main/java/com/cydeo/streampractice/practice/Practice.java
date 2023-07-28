@@ -314,8 +314,10 @@ public class Practice {
 
     // Display all the job histories in descending order by start date
     public static List<JobHistory> getAllJobHistoriesInDescendingOrder() {
-        //TODO Implement the method
-        return new ArrayList<>();
+        List<JobHistory> jbHistory = jobHistoryService.readAll().stream()
+                .sorted(Comparator.comparing(JobHistory::getStartDate).reversed())
+                .collect(Collectors.toList());
+        return jbHistory;
     }
 
     // Display all the job histories where the start date is after 01.01.2005
@@ -365,8 +367,8 @@ public class Practice {
     // Display the number of employees whose job title is programmer and department name is 'IT'
     public static Long getNumberOfEmployeesWhoseJobTitleIsProgrammerAndDepartmentNameIsIT() {
         long numberOfEmp = employeeService.readAll().stream()
-                .filter(em-> Objects.equals(em.getJob().getJobTitle(), "programmer"))
-                .filter(em-> Objects.equals(em.getDepartment().getDepartmentName(), "IT"))
+                .filter(em-> (em.getJob().getJobTitle().equalsIgnoreCase("programmer"))
+                && (em.getDepartment().getDepartmentName().equals("IT")))
                 .count();
         return numberOfEmp;
     }
@@ -382,8 +384,10 @@ public class Practice {
     // Display the initials of all the employees
     // Note: You can assume that there is no middle name
     public static List<String> getAllEmployeesInitials() {
-        //TODO Implement the method
-        return new ArrayList<>();
+        List<String> empResultList = employeeService.readAll().stream()
+                .map(em->em.getFirstName().charAt(0)+""+em.getLastName().charAt(0))
+                .collect(Collectors.toList());
+        return empResultList;
     }
 
     // Display the full names of all the employees
